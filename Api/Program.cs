@@ -15,6 +15,15 @@ builder.Services.AddSqlServer<KoiDbContext>(builder.Configuration.GetConnectionS
 builder.Services.AddScoped<IRepository, KoiRepository>();
 builder.Services.AddScoped<IService, KoiService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("http://example.com",
+                "http://www.contoso.com");
+        });
+});
 
 var app = builder.Build();
 
@@ -30,5 +39,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors();
 
 app.Run();
